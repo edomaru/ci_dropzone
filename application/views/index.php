@@ -16,7 +16,22 @@
 		Dropzone.autoDiscover = false;
 		var myDropzone = new Dropzone("#my-dropzone", {
 			url: "<?php echo site_url("images/upload") ?>",
-			acceptedFiles: "image/*"
+			acceptedFiles: "image/*",
+			addRemoveLinks: true,
+			removedfile: function(file) {
+				var name = file.name;
+
+				$.ajax({
+					type: "post",
+					url: "<?php echo site_url("images/remove") ?>",
+					data: { file: name },
+					dataType: 'html'
+				});
+
+				// remove the thumbnail
+				var previewElement;
+				return (previewElement = file.previewElement) != null ? (previewElement.parentNode.removeChild(file.previewElement)) : (void 0);
+			}
 		});
 	</script>
 </body>
