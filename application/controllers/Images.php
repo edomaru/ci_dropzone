@@ -31,4 +31,21 @@ class Images extends CI_Controller {
 		}
 	}
 
+	public function list_files()
+	{
+		$this->load->helper("file");
+		$files = get_filenames($this->upload_path);
+		// we need name and size for dropzone mockfile
+		foreach ($files as &$file) {
+			$file = array(
+				'name' => $file,
+				'size' => filesize($this->upload_path . "/" . $file)
+			);
+		}
+
+		header("Content-type: text/json");
+		header("Content-type: application/json");
+		echo json_encode($files);
+	}
+
 }
